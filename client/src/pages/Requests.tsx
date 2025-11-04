@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
+import { useSocket } from '../contexts/SocketContext';
 
 interface SwapRequest {
   id: number;
@@ -25,13 +26,11 @@ const Requests: React.FC = () => {
   const [outgoingRequests, setOutgoingRequests] = useState<SwapRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const { token } = useAuth();
+  const { socket } = useSocket();
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-  useEffect(() => {
-    fetchRequests();
-  }, []);
-
+  // Fetch requests function
   const fetchRequests = async () => {
     try {
       const [incomingRes, outgoingRes] = await Promise.all([
@@ -51,6 +50,32 @@ const Requests: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // Initial fetch on component mount
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
+  // Listen for socket notifications and auto-refresh
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNotification = () => {
+      console.log('🔄 Notification received, refreshing requests...');
+      fetchRequests();
+    };
+
+    socket.on('new_swap_request', handleNotification);
+    socket.on('swap_accepted', handleNotification);
+    socket.on('swap_rejected', handleNotification);
+
+    // Cleanup function
+    return () => {
+      socket.off('new_swap_request', handleNotification);
+      socket.off('swap_accepted', handleNotification);
+      socket.off('swap_rejected', handleNotification);
+    };
+  }, [socket]);
 
   const handleRespond = async (requestId: number, accept: boolean) => {
     try {

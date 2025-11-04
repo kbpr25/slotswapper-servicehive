@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
+import { useSocket } from '../contexts/SocketContext';
 
 interface Event {
   id: number;
@@ -20,6 +21,7 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const { isConnected } = useSocket();
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -108,7 +110,25 @@ const Dashboard: React.FC = () => {
   borderBottom: '2px solid #4CAF50',
   paddingBottom: '15px'
 }}>
-  <h1>SlotSwapper Dashboard</h1>
+  <div>
+    <h1 style={{ margin: '0 0 5px 0' }}>SlotSwapper Dashboard</h1>
+    <div style={{ 
+      display: 'flex', 
+      alignItems: 'center', 
+      gap: '8px',
+      fontSize: '12px',
+      color: '#666'
+    }}>
+      <span style={{
+        width: '8px',
+        height: '8px',
+        borderRadius: '50%',
+        backgroundColor: isConnected ? '#4CAF50' : '#f44336',
+        display: 'inline-block'
+      }}></span>
+      {isConnected ? 'Real-time connected' : 'Connecting...'}
+    </div>
+  </div>
   <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
     <button
       onClick={() => navigate('/marketplace')}

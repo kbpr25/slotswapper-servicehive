@@ -2,6 +2,11 @@ import { Response } from 'express';
 import pool from '../config/database';
 import { AuthRequest } from '../middlewares/authMiddleware';
 
+// Helper to get Socket.IO instance from Express app
+const getIO = (req: AuthRequest) => {
+  return req.app.get('io');
+};
+
 // Get all swappable slots from OTHER users
 export const getSwappableSlots = async (req: AuthRequest, res: Response) => {
   try {
@@ -165,6 +170,14 @@ export const createSwapRequest = async (req: AuthRequest, res: Response) => {
 
     // Commit transaction
     await client.query('COMMIT');
+
+    // Emit real-time notification to target user
+    const io = getIO(req);
+    io.to(`user_${theirSlot.user_id}`).emit('new_swap_request', {
+      message: 'You have a new swap request!',
+      swapRequestId: newSwapRequest.rows[0].id,
+      from: requesterId
+    });
 
     res.status(201).json({
       message: 'Swap request created successfully',
@@ -334,6 +347,13 @@ export const respondToSwapRequest = async (req: AuthRequest, res: Response) => {
         [targetUserId, 'BUSY', request.requester_slot_id]
       );
 
+      // Emit notification to requester about acceptance
+      const io = getIO(req);
+      io.to(`user_${request.requester_id}`).emit('swap_accepted', {
+        message: 'Your swap request was accepted!',
+        swapRequestId: requestId
+      });
+
       await client.query('COMMIT');
 
       res.json({
@@ -360,6 +380,13 @@ export const respondToSwapRequest = async (req: AuthRequest, res: Response) => {
         'UPDATE events SET status = $1 WHERE id = $2',
         ['SWAPPABLE', request.target_slot_id]
       );
+
+      // Emit notification to requester about rejection
+      const io = getIO(req);
+      io.to(`user_${request.requester_id}`).emit('swap_rejected', {
+        message: 'Your swap request was rejected',
+        swapRequestId: requestId
+      });
 
       await client.query('COMMIT');
 
