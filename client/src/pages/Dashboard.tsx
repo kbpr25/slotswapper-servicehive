@@ -99,30 +99,61 @@ const Dashboard: React.FC = () => {
   return (
     <div style={{ padding: '30px', maxWidth: '1000px', margin: '0 auto' }}>
       {/* Header */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '30px',
-        borderBottom: '2px solid #4CAF50',
-        paddingBottom: '15px'
-      }}>
-        <h1>SlotSwapper Dashboard</h1>
-        <button
-          onClick={handleLogout}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#f44336',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontWeight: 'bold'
-          }}
-        >
-          Logout
-        </button>
-      </div>
+{/* Header with Navigation */}
+<div style={{ 
+  display: 'flex', 
+  justifyContent: 'space-between', 
+  alignItems: 'center',
+  marginBottom: '30px',
+  borderBottom: '2px solid #4CAF50',
+  paddingBottom: '15px'
+}}>
+  <h1>SlotSwapper Dashboard</h1>
+  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+    <button
+      onClick={() => navigate('/marketplace')}
+      style={{
+        padding: '10px 20px',
+        backgroundColor: '#2196F3',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontWeight: 'bold'
+      }}
+    >
+      Marketplace
+    </button>
+    <button
+      onClick={() => navigate('/requests')}
+      style={{
+        padding: '10px 20px',
+        backgroundColor: '#FF9800',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontWeight: 'bold'
+      }}
+    >
+      Requests
+    </button>
+    <button
+      onClick={handleLogout}
+      style={{
+        padding: '10px 20px',
+        backgroundColor: '#f44336',
+        color: 'white',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontWeight: 'bold'
+      }}
+    >
+      Logout
+    </button>
+  </div>
+</div>
 
       {/* User Info */}
       <div style={{

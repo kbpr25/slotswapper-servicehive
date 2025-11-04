@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes';
+import swapRoutes from './routes/swapRoutes';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 import eventsRoutes from './routes/eventsRoutes';
 app.use('/api/events', eventsRoutes);
+app.use('/api/swap', swapRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req: Request, res: Response) => {
