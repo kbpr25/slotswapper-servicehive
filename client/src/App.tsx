@@ -5,6 +5,7 @@ import ProtectedRoute from './utils/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import CreateEvent from './pages/CreateEvent';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/create-event" element={<CreateEvent />} />
           </Route>
           
           {/* Default redirect */}
