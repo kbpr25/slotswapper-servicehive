@@ -1,0 +1,56 @@
+{
+	"info": {
+		"_postman_id": "155e181e-8cc6-4a9f-a74f-ff430cb86d3a",
+		"name": "SlotSwapper API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48037136",
+		"_collection_link": "https://kbpr25-6782496.postman.co/workspace/Bharath's-Workspace~27d5293e-a942-4948-83d9-f6ad03d48a1d/collection/48037136-155e181e-8cc6-4a9f-a74f-ff430cb86d3a?action=share&source=collection_link&creator=48037136"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://slotswapper-servicehive-production.up.railway.app/api/auth/register",
+					"protocol": "https",
+					"host": [
+						"slotswapper-servicehive-production",
+						"up",
+						"railway",
+						"app"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Create Event",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
